@@ -21,6 +21,7 @@ exports.pull = utils.toPromise(function(remote) {
     throw('remote PouchDB must be http');
   }
   var target = this;
+  var replication_info = null;
 
   // create a temporary PouchDB database
   var temp = new PouchDB('envoytemp');
@@ -56,6 +57,11 @@ exports.pull = utils.toPromise(function(remote) {
   }).then(function() {
     // replicate from temp DB to actual target
     return target.replicate.from(temp);
+  }).then(function(info) {
+    replication_info = info;
+    return temp.destroy();
+  }).then(function() {
+    return replication_info;
   });
 });
 
