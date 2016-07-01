@@ -1,7 +1,6 @@
 'use strict';
 
 var utils = require('pouchdb-utils');
-var PouchDB = require('PouchDB');
 
 
 exports.sayHello = utils.toPromise(function (callback) {
@@ -23,6 +22,7 @@ exports.pull = utils.toPromise(function(remote) {
   var target = this;
 
   // create a temporary PouchDB database
+  var PouchDB = target._pouch;
   var temp = new PouchDB('envoytemp');
   // empty it
   return temp.destroy().then(function() {
