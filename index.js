@@ -1,36 +1,30 @@
 'use strict';
 
-var utils = require('pouchdb-utils');
-
+var utils = require('pouchdb-utils'),
+   PouchDB = require('pouchdb');
 
 exports.sayHello = utils.toPromise(function (callback) {
-  //
-  // You can use the following code to
-  // get the pouch or PouchDB objects
-  //
-  // var pouch = this;
-  // var PouchDB = pouch.constructor;
-
   callback(null, 'hello');
 });
 
 exports.pull = utils.toPromise(function(remote) {
-  
+
+  if (typeof remote === 'string') {
+    remote = new PouchDB(remote);
+  }
+
   if (remote.adapter !== 'http') {
     throw('remote PouchDB must be http');
   }
   var target = this;
+  var dbName = 'envoytemp' + new Date().getTime();
 
   // create a temporary PouchDB database
-  var PouchDB = target._pouch;
-  var temp = new PouchDB('envoytemp');
-  // empty it
-  return temp.destroy().then(function() {
-    // then recreate it
-    temp = new PouchDB('envoytemp');    
-    // pull all docs from the remote (not the bodies)
-    return remote.allDocs();
-  }).then(function(response) {
+  var temp = new PouchDB(dbName);
+
+  // pull all docs from the remote (not the bodies)
+  return remote.allDocs().then(function(response) {
+    console.log(response);
     // use revsdiff to find difference with local copy
     var diffs = {};
     response.rows.forEach(function(row) {
@@ -56,6 +50,11 @@ exports.pull = utils.toPromise(function(remote) {
   }).then(function() {
     // replicate from temp DB to actual target
     return target.replicate.from(temp);
+  }).then(function() {
+    return temp.destroy();
+  }).catch(function(e) {
+    console.error('pouchdb-envoy error: ',e);
+    temp.destroy();
   });
 });
 

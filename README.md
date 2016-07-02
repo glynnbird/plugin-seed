@@ -6,15 +6,18 @@ PouchDB Plugin - pouchdb-envoy
 A custom replicator for use with Cloudant envoy. Instead of doing:
 
 ```js
+  var PouchDB = require('pouchdb');
   var local = new PouchDB("local");
-  local.replicate.from("http://localhost:8000");
+  local.replicate.from('http://username:password@my.domain.name.com/dbname');
 ```
 
 do
 
 ```js
-  var local = new PouchDB("local");
-  local.pull("http://localhost:8000");
+  var PouchDB = require('pouchdb');
+  PouchDB.plugin(require('pouchdb-envoy'));
+  var local = new PouchDB('local');
+  local.pull('http://username:password@my.domain.name.com/dbname');
 ```
 
 Building
