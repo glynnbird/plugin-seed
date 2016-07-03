@@ -3,7 +3,7 @@ PouchDB Plugin - pouchdb-envoy
 
 [![Build Status](https://travis-ci.org/pouchdb/plugin-seed.svg)](https://travis-ci.org/pouchdb/plugin-seed)
 
-A custom replicator for use with Cloudant envoy. Instead of doing:
+A custom replicator for use with [Cloudant Envoy](https://github.com/cloudant-labs/envoy). Instead of doing:
 
 ```js
   var PouchDB = require('pouchdb');
@@ -17,7 +17,26 @@ do
   var PouchDB = require('pouchdb');
   PouchDB.plugin(require('pouchdb-envoy'));
   var local = new PouchDB('local');
+  var remote = new PouchDB('http://username:password@my.domain.name.com/dbname');
+  local.pull(remote);
+```
+
+or
+
+```js
   local.pull('http://username:password@my.domain.name.com/dbname');
+```
+
+To push data up to the server, you can do:
+
+```js
+  local.push(remote);
+```
+
+or
+
+```js
+  local.push('http://username:password@my.domain.name.com/dbname');
 ```
 
 Building
