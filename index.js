@@ -13,9 +13,6 @@ exports.pull = utils.toPromise(function(remote) {
     remote = new PouchDB(remote);
   }
 
-  if (remote.adapter !== 'http') {
-    throw('remote PouchDB must be http');
-  }
   var target = this;
   var dbName = 'envoytemp' + new Date().getTime();
 
@@ -24,7 +21,7 @@ exports.pull = utils.toPromise(function(remote) {
 
   // pull all docs from the remote (not the bodies)
   return remote.allDocs().then(function(response) {
-    console.log(response);
+    
     // use revsdiff to find difference with local copy
     var diffs = {};
     response.rows.forEach(function(row) {
@@ -32,6 +29,12 @@ exports.pull = utils.toPromise(function(remote) {
     });
     return target.revsDiff(diffs);
   }).then(function(response) {
+
+    // no need to do anything
+    if (Object.keys(response).length === 0) {
+      throw('no changes');
+    }
+
     // fetch everything about document ids of interest
     var docs = [];
     Object.keys(response).map(function(id) {
@@ -53,7 +56,7 @@ exports.pull = utils.toPromise(function(remote) {
   }).then(function() {
     return temp.destroy();
   }).catch(function(e) {
-    console.error('pouchdb-envoy error: ',e);
+    console.error('pouchdb-envoy: ',e);
     temp.destroy();
   });
 });
