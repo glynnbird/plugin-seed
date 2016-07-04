@@ -2,10 +2,6 @@
 'use strict';
 
 var PouchDB = require('pouchdb');
-
-//
-// your plugin goes here
-//
 var thePlugin = require('../');
 PouchDB.plugin(thePlugin);
 var assert = require('assert');
@@ -67,6 +63,40 @@ describe('pouchdb-envoy', function() {
         var doc = data.rows[i].doc;
         assert.equal(parseInt(doc._id,10), doc.a);
         assert.equal(doc.b, doc.a*10);
+      }
+    });
+  });
+
+  it('check local edits survive', function() {
+    var id = '5';
+    var id2 = '6';
+    return remote.get(id).then(function(doc) {
+      doc.c = 'changed';
+      return remote.put(doc);
+    }).then(function() {
+      return db.get(id2);
+    }).then(function(doc) {
+      doc.c = 'locallychanged';
+      return db.put(doc);
+    }).then(function() {
+      return db.pull(remote);
+    }).then(function() {
+      return db.get(id,{conflicts:true});
+    }).then(function(doc) {
+      assert.equal(typeof doc.c, 'string');
+      assert.equal(doc.c, 'changed');
+      assert.equal(typeof doc._conflicts, 'undefined');
+      return db.allDocs({include_docs:true});
+    }).then(function(data) {
+      assert.equal(typeof data, 'object');
+      assert.equal(data.rows.length, 50);
+      for(var i in data.rows) {
+        var doc = data.rows[i].doc;
+        assert.equal(parseInt(doc._id,10), doc.a);
+        assert.equal(doc.b, doc.a*10);
+        if (doc._id === id2) {
+          assert.equal(doc.c, 'locallychanged');
+        }
       }
     });
   });

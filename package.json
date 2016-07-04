@@ -1,6 +1,6 @@
 {
   "name": "pouchdb-envoy",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Custom PouchDB replicator for Cloudant Envoy",
   "main": "index.js",
   "repository": {
@@ -32,8 +32,8 @@
     "coverage": "npm test --coverage && istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100"
   },
   "dependencies": {
-    "pouchdb": "^5.4.0",
-    "pouchdb-utils": "5.4.0"
+    "pouchdb": "5.4.4",
+    "pouchdb-utils": "5.4.4"
   },
   "devDependencies": {
     "bluebird": "^3.4.0",
