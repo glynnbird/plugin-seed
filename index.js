@@ -21,6 +21,7 @@ exports.pull = utils.toPromise(function(remote) {
   // create temporary database
   var dbName = 'envoytemp' + new Date().getTime();
   var temp = new PouchDB(dbName);
+  var summary = null;
 
   // pull all docs from the remote (not the bodies)
   return remote.allDocs().then(function(response) {
@@ -56,9 +57,13 @@ exports.pull = utils.toPromise(function(remote) {
   }).then(function() {
     // replicate from temp DB to actual target
     return target.replicate.from(temp);
-  }).then(function() {
+  }).then(function(repl) {
+    // stash the replication summary
+    summary = repl;
     // remove temporary database
     return temp.destroy();
+  }).then(function() {
+    return summary;
   }).catch(function(e) {
     console.error('pouchdb-envoy: ', e);
     temp.destroy();
