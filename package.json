@@ -45,7 +45,7 @@
     "istanbul": "^0.2.7",
     "jshint": "2.8.0",
     "mkdirp": "^0.5.0",
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.2",
     "phantomjs": "^1.9.7-5",
     "request": "^2.36.0",
     "sauce-connect-launcher": "^0.4.2",
