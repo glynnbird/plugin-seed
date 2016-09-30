@@ -32,7 +32,7 @@
     "coverage": "npm test --coverage && istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100"
   },
   "dependencies": {
-    "pouchdb": "5.4.4",
+    "pouchdb": "6.0.6",
     "pouchdb-utils": "5.4.4"
   },
   "devDependencies": {
