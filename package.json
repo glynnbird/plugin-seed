@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "pouchdb": "5.4.4",
-    "pouchdb-utils": "5.4.4"
+    "pouchdb-utils": "6.0.6"
   },
   "devDependencies": {
     "bluebird": "^3.4.0",
