@@ -48,7 +48,7 @@
     "mocha": "^2.5.3",
     "phantomjs": "^1.9.7-5",
     "request": "^2.36.0",
-    "sauce-connect-launcher": "^0.4.2",
+    "sauce-connect-launcher": "^1.1.0",
     "selenium-standalone": "^5.0.0",
     "uglify-js": "^2.4.13",
     "watchify": "^3.1.0",
