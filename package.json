@@ -52,6 +52,6 @@
     "selenium-standalone": "^5.0.0",
     "uglify-js": "^2.4.13",
     "watchify": "^3.1.0",
-    "wd": "^0.2.21"
+    "wd": "^1.1.2"
   }
 }
